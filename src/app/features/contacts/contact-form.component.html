@@ -1,0 +1,51 @@
+<div class="form-container">
+  <h3 class="form-title">{{ contact ? 'Edit Contact' : 'New Contact' }}</h3>
+
+  <form [formGroup]="form" (ngSubmit)="onSubmit()" novalidate>
+    <div class="form-row">
+      <div class="form-field">
+        <label for="contact-first">First Name <span class="required">*</span></label>
+        <input id="contact-first" type="text" formControlName="firstName" placeholder="First name" [class.error]="fieldError('firstName')" />
+        @if (fieldError('firstName')) { <span class="field-error">{{ fieldError('firstName') }}</span> }
+      </div>
+      <div class="form-field">
+        <label for="contact-last">Last Name <span class="required">*</span></label>
+        <input id="contact-last" type="text" formControlName="lastName" placeholder="Last name" [class.error]="fieldError('lastName')" />
+        @if (fieldError('lastName')) { <span class="field-error">{{ fieldError('lastName') }}</span> }
+      </div>
+    </div>
+
+    <div class="form-field">
+      <label for="contact-email">Email <span class="required">*</span></label>
+      <input id="contact-email" type="email" formControlName="email" placeholder="email@example.com" [class.error]="fieldError('email')" />
+      @if (fieldError('email')) { <span class="field-error">{{ fieldError('email') }}</span> }
+    </div>
+
+    <div class="form-field">
+      <label for="contact-phone">Phone</label>
+      <input id="contact-phone" type="text" formControlName="phone" placeholder="+1-555-0100" />
+    </div>
+
+    <div class="form-field">
+      <label for="contact-title">Title</label>
+      <input id="contact-title" type="text" formControlName="title" placeholder="e.g. VP of Sales" />
+    </div>
+
+    <div class="form-field">
+      <label for="contact-company">Company</label>
+      <select id="contact-company" formControlName="companyId">
+        <option [ngValue]="null">— None —</option>
+        @for (company of companies; track company.id) {
+          <option [ngValue]="company.id">{{ company.name }}</option>
+        }
+      </select>
+    </div>
+
+    <div class="form-actions">
+      <button type="button" class="btn btn-ghost" (click)="onCancel()">Cancel</button>
+      <button type="submit" class="btn btn-primary">
+        {{ contact ? 'Save Changes' : 'Create Contact' }}
+      </button>
+    </div>
+  </form>
+</div>

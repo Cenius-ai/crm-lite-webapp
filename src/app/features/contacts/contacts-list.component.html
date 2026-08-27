@@ -1,0 +1,74 @@
+<div class="page-layout">
+  <div class="content-panel">
+    <div class="panel-header">
+      <h2 class="panel-title">Contacts</h2>
+      <button class="btn btn-primary" (click)="openAddForm()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        Add Contact
+      </button>
+    </div>
+
+    <div class="search-bar">
+      <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input
+        type="text"
+        placeholder="Search by name or email..."
+        [ngModel]="searchQuery"
+        (ngModelChange)="onSearchChange($event)"
+        class="search-input"
+      />
+      @if (searchQuery) {
+        <button class="search-clear" (click)="onSearchChange('')" aria-label="Clear search">&times;</button>
+      }
+    </div>
+
+    <div class="table-container">
+      @if (contacts.length === 0) {
+        <div class="empty-state">
+          @if (searchQuery) {
+            <p>No contacts match "{{ searchQuery }}".</p>
+          } @else {
+            <p>No contacts yet. Add your first contact to get started.</p>
+          }
+        </div>
+      } @else {
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Title</th>
+              <th>Company</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (contact of contacts; track contact.id) {
+              <tr>
+                <td class="cell-name">{{ contact.firstName }} {{ contact.lastName }}</td>
+                <td>{{ contact.email }}</td>
+                <td>{{ contact.title || '—' }}</td>
+                <td>{{ getCompanyName(contact.companyId) }}</td>
+                <td class="cell-actions">
+                  <button class="btn btn-ghost btn-sm" (click)="openEditForm(contact)">Edit</button>
+                  <button class="btn btn-ghost btn-sm btn-danger" (click)="deleteContact(contact)">Delete</button>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      }
+    </div>
+  </div>
+
+  @if (showForm) {
+    <div class="form-panel">
+      <app-contact-form
+        [contact]="editingContact"
+        [companies]="companies"
+        (saved)="onFormSaved()"
+        (cancelled)="onFormCancelled()"
+      />
+    </div>
+  }
+</div>

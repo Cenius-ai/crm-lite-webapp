@@ -1,0 +1,54 @@
+<div class="form-container">
+  <h3 class="form-title">{{ deal ? 'Edit Deal' : 'New Deal' }}</h3>
+
+  <form [formGroup]="form" (ngSubmit)="onSubmit()" novalidate>
+    <div class="form-field">
+      <label for="deal-name">Deal Name <span class="required">*</span></label>
+      <input id="deal-name" type="text" formControlName="name" placeholder="e.g. Enterprise License Agreement" [class.error]="fieldError('name')" />
+      @if (fieldError('name')) { <span class="field-error">{{ fieldError('name') }}</span> }
+    </div>
+
+    <div class="form-field">
+      <label for="deal-amount">Amount (USD) <span class="required">*</span></label>
+      <input id="deal-amount" type="number" formControlName="amount" placeholder="50000" min="1" [class.error]="fieldError('amount')" />
+      @if (fieldError('amount')) { <span class="field-error">{{ fieldError('amount') }}</span> }
+    </div>
+
+    <div class="form-field">
+      <label for="deal-stage">Stage</label>
+      <select id="deal-stage" formControlName="stage">
+        @for (stage of stages; track stage) {
+          <option [value]="stage">{{ stageLabels[stage] }}</option>
+        }
+      </select>
+    </div>
+
+    <div class="form-field">
+      <label for="deal-company">Company <span class="required">*</span></label>
+      <select id="deal-company" formControlName="companyId" [class.error]="fieldError('companyId')">
+        <option [ngValue]="null" disabled>— Select a company —</option>
+        @for (company of companies; track company.id) {
+          <option [ngValue]="company.id">{{ company.name }}</option>
+        }
+      </select>
+      @if (fieldError('companyId')) { <span class="field-error">{{ fieldError('companyId') }}</span> }
+    </div>
+
+    <div class="form-field">
+      <label for="deal-contact">Contact</label>
+      <select id="deal-contact" formControlName="contactId">
+        <option [ngValue]="null">— None —</option>
+        @for (contact of filteredContacts(); track contact.id) {
+          <option [ngValue]="contact.id">{{ contact.firstName }} {{ contact.lastName }}</option>
+        }
+      </select>
+    </div>
+
+    <div class="form-actions">
+      <button type="button" class="btn btn-ghost" (click)="onCancel()">Cancel</button>
+      <button type="submit" class="btn btn-primary">
+        {{ deal ? 'Save Changes' : 'Create Deal' }}
+      </button>
+    </div>
+  </form>
+</div>

@@ -1,0 +1,63 @@
+<div class="page-layout">
+  <div class="content-panel">
+    <div class="panel-header">
+      <h2 class="panel-title">Deals</h2>
+      <button class="btn btn-primary" (click)="openAddForm()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        Add Deal
+      </button>
+    </div>
+
+    <div class="table-container">
+      @if (deals.length === 0) {
+        <div class="empty-state">
+          <p>No deals yet. Add your first deal to get started.</p>
+        </div>
+      } @else {
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Deal</th>
+              <th>Amount</th>
+              <th>Stage</th>
+              <th>Company</th>
+              <th>Contact</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (deal of deals; track deal.id) {
+              <tr>
+                <td class="cell-name">{{ deal.name }}</td>
+                <td class="cell-amount">{{ formatAmount(deal.amount) }}</td>
+                <td>
+                  <span class="stage-badge" [class]="stageClass(deal.stage)">
+                    {{ stageLabels[deal.stage] }}
+                  </span>
+                </td>
+                <td>{{ getCompanyName(deal.companyId) }}</td>
+                <td>{{ getContactName(deal.contactId) }}</td>
+                <td class="cell-actions">
+                  <button class="btn btn-ghost btn-sm" (click)="openEditForm(deal)">Edit</button>
+                  <button class="btn btn-ghost btn-sm btn-danger" (click)="deleteDeal(deal)">Delete</button>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      }
+    </div>
+  </div>
+
+  @if (showForm) {
+    <div class="form-panel">
+      <app-deal-form
+        [deal]="editingDeal"
+        [companies]="companies"
+        [contacts]="contacts"
+        (saved)="onFormSaved()"
+        (cancelled)="onFormCancelled()"
+      />
+    </div>
+  }
+</div>

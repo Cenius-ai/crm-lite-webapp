@@ -1,0 +1,172 @@
+/* ── Fonts ── */
+@import '@fontsource/space-grotesk/400.css';
+@import '@fontsource/space-grotesk/500.css';
+@import '@fontsource/space-grotesk/600.css';
+@import '@fontsource/space-grotesk/700.css';
+@import '@fontsource/inter-tight/400.css';
+@import '@fontsource/inter-tight/500.css';
+@import '@fontsource/inter-tight/600.css';
+@import '@fontsource/inter-tight/700.css';
+
+/* ── Design Tokens ── */
+:root {
+  /* Typography */
+  --font-display: 'Space Grotesk', system-ui, sans-serif;
+  --font-body: 'Inter Tight', system-ui, sans-serif;
+
+  /* Accent: oklch(0.58 0.14 260) / #4678cc */
+  --color-accent: oklch(0.58 0.14 260);
+  --color-accent-hex: #4678cc;
+  --color-accent-hover: oklch(0.50 0.14 260);
+  --color-accent-surface: oklch(0.58 0.14 260 / 0.08);
+  --color-accent-ring: oklch(0.58 0.14 260 / 0.2);
+
+  /* Neutral ramp — clean light surface */
+  --color-surface: #ffffff;
+  --color-surface-raised: #f9fafb;
+  --color-surface-hover: #f2f4f7;
+
+  --color-text-primary: #101828;
+  --color-text-secondary: #475467;
+  --color-text-muted: #98a2b3;
+
+  --color-border: #e4e7ec;
+  --color-hairline: #f0f1f3;
+
+  /* Semantic colors */
+  --color-danger: oklch(0.52 0.18 20);
+  --color-danger-surface: oklch(0.52 0.18 20 / 0.08);
+  --color-success: oklch(0.52 0.16 150);
+  --color-success-surface: oklch(0.52 0.16 150 / 0.08);
+
+  /* Stage colors */
+  --color-stage-lead: oklch(0.55 0.12 260);
+  --color-stage-lead-bg: oklch(0.55 0.12 260 / 0.1);
+  --color-stage-qualified: oklch(0.55 0.13 100);
+  --color-stage-qualified-bg: oklch(0.55 0.13 100 / 0.12);
+  --color-stage-won: oklch(0.52 0.16 150);
+  --color-stage-won-bg: oklch(0.52 0.16 150 / 0.1);
+  --color-stage-lost: oklch(0.48 0.08 20);
+  --color-stage-lost-bg: oklch(0.48 0.08 20 / 0.08);
+
+  /* Spacing */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+
+  /* Radius — soft 12px */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+}
+
+/* ── Reset ── */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: var(--font-body);
+  font-size: 0.92rem;
+  line-height: 1.5;
+  color: var(--color-text-primary);
+  background: var(--color-surface);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── Buttons ── */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: var(--space-2) var(--space-4);
+  border: 1px solid transparent;
+  border-radius: var(--radius-md);
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 120ms ease, color 120ms ease, box-shadow 120ms ease;
+  line-height: 1.4;
+  white-space: nowrap;
+}
+
+.btn:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+.btn-primary {
+  background: var(--color-accent);
+  color: #fff;
+
+  &:hover {
+    background: var(--color-accent-hover);
+  }
+}
+
+.btn-ghost {
+  background: transparent;
+  color: var(--color-text-secondary);
+  border-color: var(--color-border);
+
+  &:hover {
+    background: var(--color-surface-hover);
+    color: var(--color-text-primary);
+  }
+}
+
+.btn-danger {
+  color: var(--color-danger);
+
+  &:hover {
+    background: var(--color-danger-surface);
+  }
+}
+
+.btn-sm {
+  padding: var(--space-1) var(--space-3);
+  font-size: 0.78rem;
+}
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-border);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-text-muted);
+}
+
+/* ── CDK drag styles ── */
+.cdk-drag-preview {
+  box-sizing: border-box;
+}
+
+.cdk-drag-animating {
+  transition: transform 200ms cubic-bezier(0.2, 0, 0, 1);
+}

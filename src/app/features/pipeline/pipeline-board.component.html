@@ -1,0 +1,87 @@
+<div class="pipeline-layout">
+  <div class="pipeline-header">
+    <h2 class="pipeline-title">Pipeline</h2>
+    <button class="btn btn-primary" (click)="openAddForm()">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      Add Deal
+    </button>
+  </div>
+
+  <div class="board" cdkDropListGroup>
+    @for (col of columns; track col.stage) {
+      <div class="column">
+        <div class="column-header">
+          <div class="column-title-row">
+            <span
+              class="column-dot"
+              [class]="'dot-' + col.stage"
+            ></span>
+            <h3 class="column-title">{{ col.label }}</h3>
+            <span class="column-count">{{ col.deals.length }}</span>
+          </div>
+          <span class="column-total">{{ formatAmount(columnTotal(col)) }}</span>
+        </div>
+
+        <div
+          class="column-body"
+          cdkDropList
+          [id]="col.stage"
+          [cdkDropListData]="col.deals"
+          (cdkDropListDropped)="onDrop($event)"
+        >
+          @for (deal of col.deals; track deal.id) {
+            <div class="card" cdkDrag>
+              <div class="card-drag-handle" cdkDragHandle>
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><circle cx="9" cy="5" r="1.5"/><circle cx="15" cy="5" r="1.5"/><circle cx="9" cy="12" r="1.5"/><circle cx="15" cy="12" r="1.5"/><circle cx="9" cy="19" r="1.5"/><circle cx="15" cy="19" r="1.5"/></svg>
+              </div>
+              <div class="card-body">
+                <span class="card-title">{{ deal.name }}</span>
+                <span class="card-company">{{ getCompanyName(deal.companyId) }}</span>
+                @if (getContactName(deal.contactId)) {
+                  <span class="card-contact">{{ getContactName(deal.contactId) }}</span>
+                }
+                <span class="card-amount">{{ formatAmount(deal.amount) }}</span>
+              </div>
+              <div class="card-actions">
+                <div class="card-menu">
+                  <button class="card-move-btn" title="Change stage">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+                  </button>
+                  <div class="card-dropdown">
+                    @for (s of columns; track s.stage) {
+                      @if (s.stage !== col.stage) {
+                        <button (click)="moveToStage(deal, s.stage)">
+                          Move to {{ s.label }}
+                        </button>
+                      }
+                    }
+                    <hr />
+                    <button class="danger" (click)="deleteDeal(deal)">Delete</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          }
+
+          @if (col.deals.length === 0) {
+            <div class="column-empty">Drop deals here</div>
+          }
+        </div>
+      </div>
+    }
+  </div>
+
+  @if (showForm) {
+    <div class="modal-backdrop" (click)="onFormCancelled()">
+      <div class="modal-content" (click)="$event.stopPropagation()">
+        <app-deal-form
+          [deal]="null"
+          [companies]="companies"
+          [contacts]="contacts"
+          (saved)="onFormSaved()"
+          (cancelled)="onFormCancelled()"
+        />
+      </div>
+    </div>
+  }
+</div>
